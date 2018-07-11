@@ -4,6 +4,11 @@
 
 Let Vue.js support global events
 
+## install
+```
+$ npm install --save vue-event-proxy
+```
+
 ## Usage
 Just add `global:` prefix
 
