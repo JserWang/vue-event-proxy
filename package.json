@@ -7,6 +7,10 @@
     "compile": "babel --presets=es2015 -d dist src",
     "prepublish": "npm run compile"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JserWang/vue-event-proxy"
+  },
   "author": "JserWang",
   "license": "ISC",
   "keywords": [
