@@ -40,6 +40,7 @@ function plugin(Vue) {
         vmList.forEach((item) => {
           item._fromGlobalEvent = true;
           item.$emit(eventName, args);
+          item._fromGlobalEvent = false;
         });
       } else {
         emit.apply(vm, [eventName, ...args]);
