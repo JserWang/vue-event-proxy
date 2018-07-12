@@ -49,6 +49,7 @@ function plugin(Vue) {
         vmList.forEach(function (item) {
           item._fromGlobalEvent = true;
           item.$emit(eventName, args);
+          item._fromGlobalEvent = false;
         });
       } else {
         emit.apply(vm, [eventName].concat(args));
@@ -59,6 +60,10 @@ function plugin(Vue) {
 
   function applyMixin(Vue) {
     Vue.mixin({
+      beforeCreate: function beforeCreate() {
+        // Fix for warnNonPresent
+        this._fromGlobalEvent = false;
+      },
       beforeDestroy: function beforeDestroy() {
         var vm = this;
         var events = vmEventMap[vm._uid] || [];

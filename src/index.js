@@ -51,6 +51,10 @@ function plugin(Vue) {
 
   function applyMixin(Vue) {
     Vue.mixin({
+      beforeCreate() {
+        // Fix for warnNonPresent
+        this._fromGlobalEvent = false;
+      },
       beforeDestroy() {
         const vm = this;
         const events = vmEventMap[vm._uid] || [];

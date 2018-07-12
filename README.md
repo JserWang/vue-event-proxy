@@ -17,6 +17,7 @@ Just add `global:` prefix
   Vue.use(EventProxy);
 
   this.$on('global:EVENT_NAME');
+  this.$once('global:EVENT_NAME');
   this.$emit('global:EVENT_NAME');
   
 ```
