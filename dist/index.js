@@ -48,7 +48,7 @@ function plugin(Vue) {
         var vmList = eventMap[eventName];
         vmList.forEach(function (item) {
           item._fromGlobalEvent = true;
-          item.$emit(eventName, args);
+          item.$emit.apply(item, [eventName].concat(args));
           item._fromGlobalEvent = false;
         });
       } else {
