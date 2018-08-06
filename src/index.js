@@ -1,5 +1,6 @@
 function plugin(Vue) {
   const version = Number(Vue.version.split('.')[0]);
+  const NOOP = () => {};
   if (version < 2) {
     console.error('[vue-event-proxy] only support Vue 2.0+');
     return;
@@ -16,7 +17,7 @@ function plugin(Vue) {
 
   function mixinEvents(Vue) {
     const on = Vue.prototype.$on;
-    Vue.prototype.$on = function proxyOn(eventName, fn) {
+    Vue.prototype.$on = function proxyOn(eventName, fn = NOOP) {
       const vm = this;
       if (Array.isArray(eventName)) {
         eventName.forEach((item) => {
@@ -36,7 +37,7 @@ function plugin(Vue) {
     Vue.prototype.$emit = function proxyEmit(eventName, ...args) {
       const vm = this;
       if (!vm._fromGlobalEvent && globalRE.test(eventName)) {
-        const vmList = eventMap[eventName];
+        const vmList = eventMap[eventName] || [];
         vmList.forEach((item) => {
           item._fromGlobalEvent = true;
           item.$emit(eventName, ...args);
