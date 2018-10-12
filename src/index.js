@@ -10,6 +10,7 @@ function plugin(Vue) {
   if (plugin.installed) {
     return;
   }
+  plugin.installed = true
 
   const eventMap = {};
   const vmEventMap = {};
@@ -56,6 +57,9 @@ function plugin(Vue) {
           eventMap[event].splice(targetIdx, 1);
         });
         delete vmEventMap[vm._uid];
+        Object.entries(eventMap).forEach(
+          ([eventName, vmList]) => vmList.length || delete eventMap[eventName]
+        );
       },
     });
   }

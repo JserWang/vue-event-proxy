@@ -1,10 +1,10 @@
 {
   "name": "vue-event-proxy",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "Event proxy for Vue.js",
-  "main": "dist/index.js",
+  "main": "dist/vue-event-proxy.min.js",
   "scripts": {
-    "compile": "babel --presets=es2015 -d dist src",
+    "compile": "babel --presets=es2015 src -o dist/vue-event-proxy.js && uglifyjs dist/vue-event-proxy.js -m -o dist/vue-event-proxy.min.js",
     "prepublish": "npm run compile"
   },
   "repository": {
@@ -21,6 +21,7 @@
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-es2015": "^6.24.1",
+    "uglify-js": "^3.4.9"
   }
 }
