@@ -1,5 +1,6 @@
 # Vue Event Proxy
 
+[![npm](https://img.shields.io/npm/v/vue-event-proxy.svg)](https://www.npmjs.com/package/vue-event-proxy)
 [![](https://img.shields.io/badge/zh--cn-中文-orange.svg)](https://github.com/jser-club/vue-event-proxy/blob/master/README.zh-cn.md) [![](https://img.shields.io/badge/en--us-英语-green.svg)](https://github.com/jser-club/vue-event-proxy/blob/master/README.md)
 
 ## Introduction
