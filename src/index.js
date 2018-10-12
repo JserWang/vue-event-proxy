@@ -37,13 +37,9 @@ function plugin(Vue) {
     const emit = Vue.prototype.$emit;
     Vue.prototype.$emit = function proxyEmit(eventName, ...args) {
       const vm = this;
-      if (!vm._fromGlobalEvent && globalRE.test(eventName)) {
+      if (globalRE.test(eventName)) {
         const vmList = eventMap[eventName] || [];
-        vmList.forEach((item) => {
-          item._fromGlobalEvent = true;
-          item.$emit(eventName, ...args);
-          item._fromGlobalEvent = false;
-        });
+        vmList.forEach(item => emit.apply(item, [eventName, ...args]));
       } else {
         emit.apply(vm, [eventName, ...args]);
       }
@@ -53,10 +49,6 @@ function plugin(Vue) {
 
   function applyMixin(Vue) {
     Vue.mixin({
-      beforeCreate() {
-        // Fix for warnNonPresent
-        this._fromGlobalEvent = false;
-      },
       beforeDestroy() {
         const vm = this;
         const events = vmEventMap[vm._uid] || [];

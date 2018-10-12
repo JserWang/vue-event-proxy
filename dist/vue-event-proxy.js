@@ -51,12 +51,10 @@ function plugin(Vue) {
       }
 
       var vm = this;
-      if (!vm._fromGlobalEvent && globalRE.test(eventName)) {
+      if (globalRE.test(eventName)) {
         var vmList = eventMap[eventName] || [];
         vmList.forEach(function (item) {
-          item._fromGlobalEvent = true;
-          item.$emit.apply(item, [eventName].concat(args));
-          item._fromGlobalEvent = false;
+          return emit.apply(item, [eventName].concat(args));
         });
       } else {
         emit.apply(vm, [eventName].concat(args));
@@ -67,10 +65,6 @@ function plugin(Vue) {
 
   function applyMixin(Vue) {
     Vue.mixin({
-      beforeCreate: function beforeCreate() {
-        // Fix for warnNonPresent
-        this._fromGlobalEvent = false;
-      },
       beforeDestroy: function beforeDestroy() {
         var vm = this;
         var events = vmEventMap[vm._uid] || [];
