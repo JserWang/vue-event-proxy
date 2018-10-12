@@ -5,7 +5,7 @@
 
 ## Introduction
 
-Let Vue.js support global events
+The Library that let Vue.js support global events, just 1.79kb after compression.
 
 1. Global events are implemented by adding a prefix
 2. Registered event will be removed when component is destroyed
