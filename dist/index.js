@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 function plugin(Vue) {
   var version = Number(Vue.version.split('.')[0]);
+  var NOOP = function NOOP() {};
   if (version < 2) {
     console.error('[vue-event-proxy] only support Vue 2.0+');
     return;
@@ -21,7 +22,9 @@ function plugin(Vue) {
 
   function mixinEvents(Vue) {
     var on = Vue.prototype.$on;
-    Vue.prototype.$on = function proxyOn(eventName, fn) {
+    Vue.prototype.$on = function proxyOn(eventName) {
+      var fn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : NOOP;
+
       var vm = this;
       if (Array.isArray(eventName)) {
         eventName.forEach(function (item) {
@@ -44,12 +47,10 @@ function plugin(Vue) {
       }
 
       var vm = this;
-      if (!vm._fromGlobalEvent && globalRE.test(eventName)) {
-        var vmList = eventMap[eventName];
+      if (globalRE.test(eventName)) {
+        var vmList = eventMap[eventName] || [];
         vmList.forEach(function (item) {
-          item._fromGlobalEvent = true;
-          item.$emit.apply(item, [eventName].concat(args));
-          item._fromGlobalEvent = false;
+          return emit.apply(item, [eventName].concat(args));
         });
       } else {
         emit.apply(vm, [eventName].concat(args));
@@ -60,10 +61,6 @@ function plugin(Vue) {
 
   function applyMixin(Vue) {
     Vue.mixin({
-      beforeCreate: function beforeCreate() {
-        // Fix for warnNonPresent
-        this._fromGlobalEvent = false;
-      },
       beforeDestroy: function beforeDestroy() {
         var vm = this;
         var events = vmEventMap[vm._uid] || [];
