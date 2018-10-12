@@ -1,6 +1,6 @@
 {
   "name": "vue-event-proxy",
-  "version": "1.0.7",
+  "version": "1.0.5",
   "description": "Event proxy for Vue.js",
   "main": "dist/vue-event-proxy.min.js",
   "scripts": {
