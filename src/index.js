@@ -13,7 +13,6 @@ function plugin(Vue) {
   plugin.installed = true
 
   const eventMap = {};
-  const vmEventMap = {};
   const globalRE = /^global:/
 
   function mixinEvents(Vue) {
@@ -26,7 +25,6 @@ function plugin(Vue) {
         });
       } else {
         if (globalRE.test(eventName)) {
-          (vmEventMap[vm._uid] || (vmEventMap[vm._uid] = [])).push(eventName);
           (eventMap[eventName] || (eventMap[eventName] = [])).push(vm);
         }
         on.call(vm, eventName, fn);
@@ -51,12 +49,11 @@ function plugin(Vue) {
     Vue.mixin({
       beforeDestroy() {
         const vm = this;
-        const events = vmEventMap[vm._uid] || [];
+        const events = Object.keys(eventMap);
         events.forEach((event) => {
           const targetIdx = eventMap[event].findIndex(item => item._uid === vm._uid);
           eventMap[event].splice(targetIdx, 1);
         });
-        delete vmEventMap[vm._uid];
         Object.entries(eventMap).forEach(
           ([eventName, vmList]) => vmList.length || delete eventMap[eventName]
         );
